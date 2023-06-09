@@ -22,7 +22,6 @@ xrfk = '?xrfkey={}'.format(xrf)
 endpoint = '/qrs/app/full'
 url = QS_Node + endpoint + xrfk
 lresp = requests.get(url, headers=headers, verify=False, cert=cert)
-lresp = requests.get(:4242,)
 print(lresp.status_code)
 # add apps to list
 for lic in lresp.json():

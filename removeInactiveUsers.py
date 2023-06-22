@@ -19,7 +19,7 @@ userAccessDates = {}
 xrfk = '?xrfkey={}'.format(xrf)
 endpoint = '/qrs/user/'
 #pull analyzers
-with open('inactiveUsers.csv', newline='') as f:
+with open('inactiveUsersToRemove.csv', newline='') as f:
     reader = csv.reader(f)
     for row in reader:
         #print(row[2])

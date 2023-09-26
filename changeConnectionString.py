@@ -29,7 +29,7 @@ with open('connectionsToEdit.csv', newline='', encoding="utf-8-sig") as f:
         print('Get request response: ' + str(response))
         connection = json.loads(response.text)
         connString = (connection['connectionstring'])
-        newConnString = connString.replace('C:', 'D:')
+        newConnString = connString.replace('Apt05cnhw', 'ApP67cnhw')
         #print(newConnString)
         connection['connectionstring'] = newConnString
         #print(connection['connectionstring'])

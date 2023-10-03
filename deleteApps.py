@@ -19,7 +19,7 @@ userAccessDates = {}
 xrfk = '?xrfkey={}'.format(xrf)
 endpoint = '/qrs/app/'
 #pull analyzers
-with open('appsToDelete.csv', newline='') as f:
+with open('appsToDelete.csv', newline='', encoding="utf-8-sig") as f:
     reader = csv.reader(f)
     for row in reader:
         #print(row[2])

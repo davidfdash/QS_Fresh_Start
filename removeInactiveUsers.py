@@ -27,3 +27,5 @@ with open('inactiveUsersToRemove.csv', newline='') as f:
         url = QS_Node + endpoint + id + xrfk
         #print(url)
         lresp = requests.delete(url, headers=headers, verify=False, cert=cert)
+        print(lresp)
+        

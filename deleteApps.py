@@ -23,7 +23,7 @@ with open('appsToDelete.csv', newline='') as f:
     reader = csv.reader(f)
     for row in reader:
         #print(row[2])
-        id = row[2]
+        id = row[0]
         url = QS_Node + endpoint + id + xrfk
         #print(url)
         lresp = requests.delete(url, headers=headers, verify=False, cert=cert)

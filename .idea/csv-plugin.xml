@@ -17,6 +17,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\connectionsToDelete.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\connectionsToEdit.csv">
           <value>
             <Attribute>

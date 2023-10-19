@@ -24,9 +24,10 @@ url = QS_Node + endpoint + xrfk
 lresp = requests.get(url, headers=headers, verify=False, cert=cert)
 print(lresp.status_code)
 # add apps to list
+appReloadDates.append(['app name', 'last reload', 'app id', 'user id', 'published', 'date/time modified'])
 for lic in lresp.json():
 
-    appReloadDates.append([lic['name'],lic['lastReloadTime'], lic['id']])
+    appReloadDates.append([lic['name'], lic['lastReloadTime'], lic['id'], lic['owner']['userId'], lic['published'], lic['modifiedDate']])
 #print(appReloadDates)
 
 #write list to csv

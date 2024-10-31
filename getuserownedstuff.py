@@ -9,17 +9,18 @@ xrf = 'iX83QmNlvu87yyAB'
 headers = {'X-Qlik-Xrfkey': xrf,
 "Content-Type": "application/json",
 "X-Qlik-User":user}
+params = {"userselection": "3e342e4e-b412-4701-a52a-1e9c20e984be"}
 
 #Set up the certificate path
-cert = 'C:\qscerts\clientandkey.pem'
+cert = 'C:\\qscerts\\clientandkey.pem'
 
 #Set the endpoint URL
-endpoint = '/qrs/user'
+endpoint = '/qrs/user/ownedresources'
 xrfk = '?xrfkey={}'.format(xrf)
 url = QS_Node + endpoint + xrfk
 print(url)
 #inactiveUsers = []
-resp = requests.get(url, headers=headers, verify=False, cert=cert)
+resp = requests.get(url, headers=headers, params=params, verify=False, cert=cert)
 print(resp)
 for i in resp.json():
     print(i)

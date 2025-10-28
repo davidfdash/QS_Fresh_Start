@@ -1,6 +1,6 @@
 import requests
 import csv
-from Variables import user, QS_Node
+from Variables import user, QS_Node, cert
 
 requests.packages.urllib3.disable_warnings()
 
@@ -9,9 +9,6 @@ xrf = 'iX83QmNlvu87yyAB'
 headers = {'X-Qlik-xrfkey': xrf,
 "Content-Type": "application/json",
 "X-Qlik-User":user}
-
-#Set up the certificate path
-cert = 'C:\\qscerts\\clientandkey.pem'
 
 #Set the endpoint URL
 endpoint = '/qrs/user/full'

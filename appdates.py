@@ -10,7 +10,7 @@ headers = {'X-Qlik-xrfkey': xrf,
 "X-Qlik-User":user}
 
 #Set up the certificate path
-cert = 'C:\qscerts\clientandkey.pem'
+cert = 'C:\\qscerts\\clientandkey.pem'
 
 #create blank dict
 appReloadDates = []

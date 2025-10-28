@@ -21,7 +21,7 @@ for i in resp.json():
     #print(i['inactive'])
     if i['removedExternally'] == True:
         #print([i['userId'], i['inactive'], i['id']])
-        removedExternally.append([i['userId'], i['removedExternally'], i['id']])
+        removedExternally.append([i['userId'], i['removedExternally'], i['id'], i['userDirectory']])
 print(removedExternally)
 
 #Set the endpoint URL
@@ -34,5 +34,10 @@ for i in removedExternally:
     url = QS_Node + endpoint + id + xrfk
     #print(url)
     lresp = requests.delete(url, headers=headers, verify=False, cert=cert)
+    i.append(lresp)
     print(lresp)
 
+#write list to csv and add "userDirectory"
+with open('removedUsers.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerows(removedExternally)

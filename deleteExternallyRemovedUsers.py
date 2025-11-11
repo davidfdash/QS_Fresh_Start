@@ -126,7 +126,6 @@ with open('ObjectOutput/summary.csv', 'w', newline='') as f:
 #    #print(url)
 #    lresp = requests.delete(url, headers=headers, verify=False, cert=cert)
 #    i.append(lresp)
-#    print(lresp)
 
 #write list to csv and add "userDirectory"
 #with open('ObjectOutput/removedUsers.csv', 'w', newline='') as f:

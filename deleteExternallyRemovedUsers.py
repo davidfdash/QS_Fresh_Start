@@ -129,6 +129,6 @@ with open('ObjectOutput/summary.csv', 'w', newline='') as f:
 #    print(lresp)
 
 #write list to csv and add "userDirectory"
-#with open('removedUsers.csv', 'w', newline='') as f:
+#with open('ObjectOutput/removedUsers.csv', 'w', newline='') as f:
 #    writer = csv.writer(f)
 #    writer.writerows(removedExternally)

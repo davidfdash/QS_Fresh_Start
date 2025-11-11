@@ -1,6 +1,7 @@
 import requests
 import csv
 from Variables import user, QS_Node, cert
+import os
 
 requests.packages.urllib3.disable_warnings()
 
@@ -17,28 +18,14 @@ url = QS_Node + endpoint + xrfk
 #print(url)
 removedExternally = []
 resp = requests.get(url, headers=headers, verify=False, cert=cert)
+#print(resp.json()[0])
 for i in resp.json():
     #print(i['inactive'])
-    #if i['removedExternally'] == True:
+    if i['removedExternally'] == True:
         #print([i['userId'], i['inactive'], i['id']])
-    removedExternally.append([i['userId'], i['removedExternally'], i['id'], i['userDirectory']])
-#print(removedExternally)
-
-for i in removedExternally:
-    objects = []
-    counter = 0
-    # GET SHEETS
-    # Set the endpoint URL
-    xrfk = '?xrfkey={}'.format(xrf)
-    endpoint = '/qrs/app/object/full'
-    url = QS_Node + endpoint + xrfk
-    lresp = requests.get(url, headers=headers, verify=False, cert=cert)
-
-    for i in lresp.json():
-        if i['owner']['id'] == removedExternally['id'] and i['published'] is True and i['objectType'] == 'sheet':
-            objects.append(
-                [i['owner']['userId'], i['id'], i['app']['name'], i['objectType'], i['published'], i['name']])
-    #        counter += 1
+        removedExternally.append([i['userId'], i['removedExternally'], i['id'], i['userDirectory'], i['userDirectory'] + '\\' + i['userId']])
+# print(removedExternally)
+#print(removedExternally[0])
 # GET APPS
 # Set the endpoint URL
 xrfk = '?xrfkey={}'.format(xrf)
@@ -78,42 +65,60 @@ endpoint = '/qrs/task/full'
 url = QS_Node + endpoint + xrfk
 lresp = requests.get(url, headers=headers, verify=False, cert=cert)
 tasks = lresp.json()
+#print(tasks[0])
+filename = ""
+summary = [['User Id', 'ID', 'Object Count']]
+#objects = [['User Id', 'ID', 'Name', 'Type', 'Published', 'Name']]
+os.makedirs('ObjectOutput', exist_ok=True)
+for n in removedExternally:
+    counter = 0
+    objects = [['User Id', 'ID', 'Name', 'Type', 'Published', 'Name']]
+    # search APPS
+    for i in apps:
+        if i['owner']['id'] == n[2] and i['published'] is True:
+            objects.append([i['owner']['userId'], i['id'], i['name'], 'App', i['published'], i['name']])
+            counter += 1
 
-# search APPS
-for i in apps:
-    if i['owner']['id'] == userid and i['published'] is True:
-        objects.append([i['owner']['userId'], i['id'], i['name'], 'App', i['published'], i['name']])
-#        counter += 1
+    # search sheets
+    for i in sheets:
+        if i['owner']['id'] == n[2] and i['published'] is True and i['objectType'] == 'sheet':
+            objects.append([i['owner']['userId'], i['id'], i['app']['name'], i['objectType'], i['published'], i['name']])
+            counter += 1
 
-# search sheets
-for i in sheets:
-    if i['owner']['id'] == userid and i['published'] is True and i['objectType'] == 'sheet':
-        objects.append([i['owner']['userId'], i['id'], i['app']['name'], i['objectType'], i['published'], i['name']])
+    # search connections
+    for i in connections:
+        if i['owner']['id'] == n[2]:
+            objects.append([i['owner']['userId'], i['id'], i['name'], 'Data Connection', 'N/A', i['name']])
+            counter += 1
 
-# search connections
-for i in connections:
-    if i['owner']['id'] == userid:
-        objects.append([i['owner']['userId'], i['id'], i['name'], 'Data Connection', 'N/A', i['name']])
+    # search extensions
+    for i in extensions:
+        if i['owner']['id'] == n[2]:
+            objects.append([i['owner']['userId'], i['id'], i['name'], 'Extension', 'N/A', i['name']])
+            counter += 1
 
-# search extensions
-for i in extensions:
-    if i['owner']['id'] == userid:
-        objects.append([i['owner']['userId'], i['id'], i['name'], 'Extension', 'N/A', i['name']])
-
-# search tasks
-for i in tasks:
-    if i['owner']['id'] == userid:
-        objects.append([i['modifiedByUserName'], i['id'], i['name'], 'Task', 'N/A', i['name']])
-
-print(objects)
-filename =
-with open('objects.csv', 'w', newline='') as f:
+    # search tasks
+    for i in tasks:
+        if i['modifiedByUserName'] == n[4]:
+            objects.append([i['modifiedByUserName'], i['id'], i['name'], 'Task', 'N/A', i['name']])
+            counter += 1
+    print(counter)
+#    print(objects)
+    filename = n[2] + '.csv'
+    path = "ObjectOutput/" + filename
+    summary.append([n[0], n[2], counter])
+    #if len(objects) > 1:
+    if counter > 0:
+        with open(path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(objects)
+print(summary)
+with open('ObjectOutput/summary.csv', 'w', newline='') as f:
     writer = csv.writer(f)
-    writer.writerows(objects)
+    writer.writerows(summary)
 
 #Set the endpoint URL
 #endpoint = '/qrs/user/'
-
 #for i in removedExternally:
 #    #print(row[2])
 #    id = i[2]
